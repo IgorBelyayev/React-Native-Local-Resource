@@ -56,11 +56,11 @@ Then, inside a `module.exports` object,
 create a key called `resolver` with another object with a key called `assetExts`. 
 The value of `assetExts` should be an array of the resource file extensions you want to support. 
 
-For example, if you want to support `md` files, your `rn-cli.config.js` would like like this:
+For example, if you want to support `md` and `txt` files, your `rn-cli.config.js` would like like this:
 ```javascript
 module.exports = {
     resolver: {
-        assetExts: ["md"]
+        assetExts: ["md", "txt"]
     }
 }
 ```
@@ -71,11 +71,11 @@ Then, inside a `module.exports` object,
 create a function called `getAssetExts` which returns an array of the resource file
 extensions you want to support. 
 
-For example, if you want to support `md` files, your `rn-cli.config.js` would like like this:
+For example, if you want to support `md` and `txt` files, your `rn-cli.config.js` would like like this:
 ```javascript
 module.exports = {
     getAssetExts() {
-        return ["md"]
+        return ["md", "txt"]
     }
 }
 ```
@@ -90,7 +90,7 @@ Example usage:
 
 ```javascript
 import loadLocalResource from 'react-native-local-resource'
-import myResource from './my_resource.md'
+import myResource from './my_resource.txt'
 
 function example() {
     loadLocalResource(myResource).then((myResourceContent) => {
