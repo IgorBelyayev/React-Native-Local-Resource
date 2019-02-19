@@ -1,6 +1,8 @@
 buildscript {
     repositories {
-        google()
+        maven {
+            url 'https://maven.google.com'
+        }
         jcenter()
     }
 
@@ -28,10 +30,12 @@ android {
 
 repositories {
     mavenCentral()
-    google()
+    maven {
+        url 'https://maven.google.com'
+    }
 }
 
 dependencies {
-    implementation 'com.facebook.react:react-native:+'
-    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+    provided 'com.facebook.react:react-native:+'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
 }
