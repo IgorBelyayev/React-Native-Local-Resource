@@ -1,0 +1,30 @@
+{
+  "name": "react-native-local-resource-demo",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "postinstall": "rm -rf ./node_modules/react-native-local-resource/demo_project",
+    "reinstall": "yarn remove react-native-local-resource && yarn add ../",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android",
+    "android:release": "cd android && ./adb-run-release.sh",
+    "android:release:reinstall": "yarn reinstall && yarn android:release"
+  },
+  "dependencies": {
+    "react": "16.6.3",
+    "react-native": "0.58.4",
+    "react-native-local-resource": "../"
+  },
+  "devDependencies": {
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "24.1.0",
+    "jest": "24.1.0",
+    "metro-react-native-babel-preset": "0.51.1",
+    "react-test-renderer": "16.6.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
