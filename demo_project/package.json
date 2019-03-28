@@ -13,8 +13,8 @@
     "android:release:reinstall": "yarn reinstall && yarn android:release"
   },
   "dependencies": {
-    "react": "16.6.3",
-    "react-native": "0.58.4",
+    "react": "16.8.3",
+    "react-native": "0.59.2",
     "react-native-local-resource": "../"
   },
   "devDependencies": {
