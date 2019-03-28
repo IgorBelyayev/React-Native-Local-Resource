@@ -1,6 +1,6 @@
 import {NativeModules, Platform} from 'react-native';
 
-const {RNReactNativeLocalResource} = NativeModules;
+const {RNLocalResourceModule} = NativeModules;
 const {OS} = Platform;
 import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource";
 
@@ -21,7 +21,7 @@ function getUriFromSource(source) {
 
 async function loadAndroidRawResource(uri) {
     try {
-        return await RNReactNativeLocalResource.getRawResource(uri);
+        return await RNLocalResourceModule.getRawResource(uri);
     } catch (e) {
         console.error("Error in RawResourceUtils while trying to natively load an Android raw resource: ", e);
         return null;
