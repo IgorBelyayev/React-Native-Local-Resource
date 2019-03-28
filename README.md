@@ -100,3 +100,6 @@ function example() {
 }
 ```
   
+## Demo Project
+
+This repo contains a demo project in the [`demo_project`](/demo_project) folder.
