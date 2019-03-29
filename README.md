@@ -45,12 +45,32 @@ Not required.
 
 #### Specify file extensions
 
+Specifying which file extensions you want to support is slightly different depending on which version of React Native your project is using.
+
+##### React Native versions >= 0.59
+
+You will need a [metro.config.js](https://facebook.github.io/metro/docs/en/configuration.html)
+file in order to use this library. You should already probably have this file in your root project directory, but if you don't, create it.
+
+Then, inside a `module.exports` object,
+create a key called `resolver` with another object with a key called `assetExts`. 
+The value of `assetExts` should be an array of the resource file extensions you want to support. 
+
+For example, if you want to support `md` and `txt` files, your `metro.config.js` would like like this:
+```javascript
+module.exports = {
+    resolver: {
+        assetExts: ["md", "txt"]
+    }
+}
+```
+
+
+##### React Native versions >= 0.57 and < 0.59
+
 You will need a [rn-cli.config.js](https://facebook.github.io/react-native/docs/understanding-cli#cli-configs
 ) file in order to use this library. Check your root project directory to see if you
 already have this file and if you don't, create it.
-
-
-##### React Native versions 0.57 or greater
 
 Then, inside a `module.exports` object,
 create a key called `resolver` with another object with a key called `assetExts`. 
@@ -65,7 +85,11 @@ module.exports = {
 }
 ```
 
-##### React Native versions below 0.57
+##### React Native versions < 0.57
+
+You will need a [rn-cli.config.js](https://facebook.github.io/react-native/docs/understanding-cli#cli-configs
+) file in order to use this library. Check your root project directory to see if you
+already have this file and if you don't, create it.
 
 Then, inside a `module.exports` object,
 create a function called `getAssetExts` which returns an array of the resource file
