@@ -8,10 +8,11 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
-import org.apache.commons.io.IOUtils;
-
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import static com.facebook.react.common.StandardCharsets.UTF_8;
 
 public class RNLocalResourceModule extends ReactContextBaseJavaModule {
 
@@ -26,31 +27,36 @@ public class RNLocalResourceModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getRawResource(String rawResourceUri, Promise promise) {
-        int resId = getResourceId(rawResourceUri);
+    public void getRawResource(String name, Promise promise) {
         try {
-            String resourceAsString = readResourceAsString(resId);
-            promise.resolve(resourceAsString);
+            ReactApplicationContext context = getReactApplicationContext();
+            Resources resources = context.getResources();
+            String packageName = context.getPackageName();
+            int id = resources.getIdentifier(name, "raw", packageName);
+            InputStream stream = resources.openRawResource(id);
+            try {
+                InputStreamReader reader = new InputStreamReader(stream, UTF_8);
+                char[] buffer = new char[DEFAULT_BUFFER_SIZE];
+                StringBuilder builder = new StringBuilder();
+                int n;
+                while ((n = reader.read(buffer)) != EOF) {
+                    builder.append(buffer, 0, n);
+                }
+                String result = builder.toString();
+                promise.resolve(result);
+            } finally {
+                try {
+                    stream.close();
+                } catch (IOException ioe) {
+                    // ignore
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             promise.reject(e);
         }
     }
 
-    private String readResourceAsString(int resId) throws IOException {
-        Resources resources = getReactApplicationContext().getResources();
-
-        InputStream is = resources.openRawResource(resId);
-        try {
-            return IOUtils.toString(is);
-        } finally {
-            IOUtils.closeQuietly(is);
-        }
-    }
-
-    private int getResourceId(String resourceUri) {
-        Resources resources = getReactApplicationContext().getResources();
-        String packageName = getReactApplicationContext().getPackageName();
-        return resources.getIdentifier(resourceUri, "raw", packageName);
-    }
+    private static final int EOF = -1;
+    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 }
