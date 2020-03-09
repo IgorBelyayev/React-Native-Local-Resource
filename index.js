@@ -4,22 +4,30 @@ const {RNLocalResourceModule} = NativeModules;
 const {OS} = Platform;
 import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource";
 
-export default async function loadLocalRawResource(source) {
-
+export async function loadLocalRawResourceAndroid(source) {
     const uri = getUriFromSource(source);
-    if (OS == "android" && isUriAnAndroidResourceIdentifier(uri)) {
+    if (isUriAnAndroidResourceIdentifier(uri)) {
         return loadAndroidRawResource(uri);
     } else {
         return loadResourceUsingFetch(uri);
     }
 }
 
-function getUriFromSource(source) {
+export async function loadLocalRawResourceDefault(source) {
+    const uri = getUriFromSource(source);
+    return loadResourceUsingFetch(uri);
+}
+
+const loadLocalRawResource = OS == "android" ? loadLocalRawResourceAndroid : loadLocalRawResourceDefault;
+
+export default loadLocalRawResource;
+
+export function getUriFromSource(source) {
     const resolvedAssetSource = resolveAssetSource(source);
     return resolvedAssetSource.uri;
 }
 
-async function loadAndroidRawResource(uri) {
+export async function loadAndroidRawResource(uri) {
     try {
         return await RNLocalResourceModule.getRawResource(uri);
     } catch (e) {
@@ -28,11 +36,11 @@ async function loadAndroidRawResource(uri) {
     }
 }
 
-async function loadResourceUsingFetch(uri) {
+export async function loadResourceUsingFetch(uri) {
     const blob = await fetch(uri);
     return await blob.text();
 }
 
-function isUriAnAndroidResourceIdentifier(uri) {
+export function isUriAnAndroidResourceIdentifier(uri) {
     return typeof uri == "string" && uri.indexOf("/") <= -1;
 }
