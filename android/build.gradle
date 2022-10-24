@@ -36,6 +36,6 @@ repositories {
 }
 
 dependencies {
-    provided 'com.facebook.react:react-native:+'
-    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    implementation 'com.facebook.react:react-native:+'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 }
